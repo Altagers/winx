@@ -15,9 +15,7 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const appBaseUrl = "https://v0-powerpuff-girls-brown.vercel.app"
-
-  // Исправляем функцию handleShare, чтобы правильно форматировать текст с указанием авторов
+  const appBaseUrl = "https://winx-nine.vercel.app"
 
   const handleShare = async () => {
     setStatus("loading")
