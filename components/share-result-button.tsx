@@ -17,6 +17,8 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
 
   const appBaseUrl = "https://v0-powerpuff-girls-brown.vercel.app"
 
+  // Исправляем функцию handleShare, чтобы правильно форматировать текст с указанием авторов
+
   const handleShare = async () => {
     setStatus("loading")
     setErrorMessage(null)

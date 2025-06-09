@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const characterName = searchParams.get("characterName")
-    const characterImagePublicPath = searchParams.get("characterImage") // e.g., /bloom.png
+    const characterImagePublicPath = searchParams.get("characterImage") // e.g., /stella.png
 
     // Обновленный базовый URL
     const baseUrl = "https://v0-powerpuff-girls-brown.vercel.app"
@@ -40,6 +40,7 @@ export async function GET(req: NextRequest) {
                   ? "#00CED1" // Aisha Cyan
                   : "#FF6B9D" // Default Pink
 
+    // Создаем более качественное изображение
     return new ImageResponse(
       <div
         style={{
@@ -54,22 +55,118 @@ export async function GET(req: NextRequest) {
           border: "10px solid white",
           borderRadius: "30px",
           backgroundImage: "radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%)",
+          position: "relative",
         }}
       >
-        <img
-          src={characterImageUrl || "/placeholder.svg"}
-          width={300}
-          height={300}
-          style={{ borderRadius: "50%", border: "8px solid white", marginBottom: "30px" }}
-          alt={characterName}
-        />
+        {/* Фоновые элементы для Стеллы - солнце и луна */}
+        {characterData.name === "Stella" && (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                top: "40px",
+                right: "60px",
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                backgroundColor: "white",
+                boxShadow: "0 0 40px rgba(255, 255, 255, 0.8)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "60px",
+                left: "60px",
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                boxShadow: "0 0 30px rgba(255, 255, 255, 0.6)",
+              }}
+            />
+          </>
+        )}
+
+        {/* Фоновые элементы для Блум - огонь */}
+        {characterData.name === "Bloom" && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "40px",
+              width: "80%",
+              height: "120px",
+              background: "linear-gradient(to top, rgba(255, 100, 0, 0.7), transparent)",
+              borderRadius: "50%",
+              filter: "blur(20px)",
+            }}
+          />
+        )}
+
+        {/* Фоновые элементы для Флоры - цветы */}
+        {characterData.name === "Flora" && (
+          <>
+            <div
+              style={{
+                position: "absolute",
+                top: "60px",
+                left: "60px",
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 182, 193, 0.7)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "80px",
+                right: "80px",
+                width: "70px",
+                height: "70px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255, 182, 193, 0.7)",
+              }}
+            />
+          </>
+        )}
+
+        {/* Изображение персонажа в круглой рамке */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "320px",
+            height: "320px",
+            borderRadius: "50%",
+            backgroundColor: "white",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.2)",
+            marginBottom: "30px",
+            overflow: "hidden",
+            border: "8px solid white",
+          }}
+        >
+          <img
+            src={characterImageUrl || "/placeholder.svg"}
+            width={300}
+            height={300}
+            style={{
+              objectFit: "cover",
+              borderRadius: "50%",
+            }}
+            alt={characterName}
+          />
+        </div>
+
+        {/* Заголовок с именем персонажа */}
         <h1
           style={{
             fontSize: "82px",
             fontWeight: "bold",
             color: "white",
             textShadow:
-              "4px 4px 0 rgba(0,0,0,0.5), -4px -4px 0 rgba(0,0,0,0.5), 4px -4px 0 rgba(0,0,0,0.5), -4px 4px 0 rgba(0,0,0,0.5)",
+              "4px 4px 0 rgba(0,0,0,0.3), -4px -4px 0 rgba(0,0,0,0.3), 4px -4px 0 rgba(0,0,0,0.3), -4px 4px 0 rgba(0,0,0,0.3)",
             margin: "0 0 20px 0",
             textAlign: "center",
             lineHeight: 1.1,
@@ -77,6 +174,8 @@ export async function GET(req: NextRequest) {
         >
           You are {characterName}! {characterData.emoji}
         </h1>
+
+        {/* Плашка с силой персонажа */}
         <div
           style={{
             display: "flex",
@@ -86,6 +185,7 @@ export async function GET(req: NextRequest) {
             padding: "15px 30px",
             borderRadius: "25px",
             marginBottom: "20px",
+            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           }}
         >
           <span
@@ -98,22 +198,54 @@ export async function GET(req: NextRequest) {
             {characterData.power}
           </span>
         </div>
-        <p
+
+        {/* Описание персонажа */}
+        <div
           style={{
-            fontSize: "32px",
-            color: "white",
-            textAlign: "center",
-            maxWidth: "90%",
-            lineHeight: 1.3,
-            textShadow: "2px 2px 0 rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            padding: "20px 30px",
+            borderRadius: "20px",
+            maxWidth: "80%",
+            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           }}
         >
-          {characterData.description}
-        </p>
+          <p
+            style={{
+              fontSize: "28px",
+              color: "#333",
+              textAlign: "center",
+              lineHeight: 1.3,
+              margin: 0,
+            }}
+          >
+            {characterData.description}
+          </p>
+        </div>
+
+        {/* Плашка с авторами */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor: "rgba(255,255,255,0.9)",
+            padding: "8px 15px",
+            borderRadius: "15px",
+            fontSize: "16px",
+            color: "#333",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          Built by @altagers.eth with @sohey
+        </div>
       </div>,
       {
         width: 1200,
         height: 630,
+        headers: {
+          "Cache-Control": "public, max-age=31536000, immutable",
+          "Content-Type": "image/png",
+        },
       },
     )
   } catch (e: any) {

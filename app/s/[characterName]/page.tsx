@@ -69,9 +69,12 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   }
   const characterImagePublicPath = characterImageMap[character.name] || "/placeholder.svg"
 
+  // Добавляем случайное число для предотвращения кэширования
+  const timestamp = Date.now()
   const dynamicImageUrl = new URL("/api/generate-og-image", appBaseUrl)
   dynamicImageUrl.searchParams.set("characterName", character.name)
   dynamicImageUrl.searchParams.set("characterImage", characterImagePublicPath)
+  dynamicImageUrl.searchParams.set("t", timestamp.toString())
 
   frameDefinition = {
     version: "next",
@@ -135,7 +138,8 @@ export default function SharePage({ params }: Props) {
     Aisha: "/aisha.png",
   }
   const characterImagePublicPath = characterImageMap[character.name] || "/placeholder.svg"
-  const ogImageUrl = `${appBaseUrl}/api/generate-og-image?characterName=${encodeURIComponent(character.name)}&characterImage=${encodeURIComponent(characterImagePublicPath)}`
+  const timestamp = Date.now()
+  const ogImageUrl = `${appBaseUrl}/api/generate-og-image?characterName=${encodeURIComponent(character.name)}&characterImage=${encodeURIComponent(characterImagePublicPath)}&t=${timestamp}`
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-violet-400 via-purple-500 to-indigo-600 p-8 text-center">
