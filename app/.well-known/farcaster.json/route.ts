@@ -17,12 +17,16 @@ export async function GET() {
   console.log("Using URL:", URL)
 
   const manifest = {
-    // Временно убираем ассоциацию аккаунта до создания новой
-    // accountAssociation: {
-    //   header: process.env.FARCASTER_HEADER,
-    //   payload: process.env.FARCASTER_PAYLOAD,
-    //   signature: process.env.FARCASTER_SIGNATURE,
-    // },
+    // Добавляем account association
+    accountAssociation: {
+      header:
+        process.env.FARCASTER_HEADER ||
+        "eyJmaWQiOjIxNzI2MSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDA3RjZkOEQzMWY0NjVGY2IyQTEyRjNEMjY3Njc3MDViRUMyMzEzOTkifQ",
+      payload: process.env.FARCASTER_PAYLOAD || "eyJkb21haW4iOiJ3aW54LW5pbmUudmVyY2VsLmFwcCJ9",
+      signature:
+        process.env.FARCASTER_SIGNATURE ||
+        "MHhhYTYzMjNjYTM0MjZkZjgxMGVlYTNkMDM2ODRmMzZiNjFlMTNjMDM4Njg5Yzg5NzE3MjA1ZGNhYjAzMjNkNTI1NGNhYWZjNWFmOGVjYTE1YWMwMjBjY2Y2NjE1NWE4NmJiNTkxNjAyZGI3OTdmMGIwZGQzZGYxNzI5OWFiNGM1MjFj",
+    },
     frame: withValidProperties({
       version: "1",
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Winx Analyzer",

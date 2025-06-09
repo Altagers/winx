@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
   // Define the frame structure
   let frameDefinition: any
+  let dynamicImageUrl: string
 
   if (!character) {
     frameDefinition = {
@@ -69,16 +70,17 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   }
   const characterImagePublicPath = characterImageMap[character.name] || "/placeholder.svg"
 
-  // Добавляем случайное число для предотвращения кэширования
+  // Создаем URL для динамического изображения
   const timestamp = Date.now()
-  const dynamicImageUrl = new URL("/api/generate-og-image", appBaseUrl)
-  dynamicImageUrl.searchParams.set("characterName", character.name)
-  dynamicImageUrl.searchParams.set("characterImage", characterImagePublicPath)
-  dynamicImageUrl.searchParams.set("t", timestamp.toString())
+  const dynamicImageUrlObj = new URL("/api/generate-og-image", appBaseUrl)
+  dynamicImageUrlObj.searchParams.set("characterName", character.name)
+  dynamicImageUrlObj.searchParams.set("characterImage", characterImagePublicPath)
+  dynamicImageUrlObj.searchParams.set("t", timestamp.toString())
+  dynamicImageUrl = dynamicImageUrlObj.toString()
 
   frameDefinition = {
     version: "next",
-    imageUrl: dynamicImageUrl.toString(),
+    imageUrl: dynamicImageUrl,
     button: {
       title: `I'm ${character.name}! Open Winx Analyzer`,
       action: {
@@ -97,10 +99,38 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     openGraph: {
       title: `I'm ${character.name}! ${character.emoji}`,
       description: `${character.description} Built by @altagers.eth with support from @sohey`,
-      images: [{ url: dynamicImageUrl.toString(), width: 1200, height: 630, alt: `${character.name} Result` }],
+      images: [
+        {
+          url: dynamicImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${character.name} Result`,
+          type: "image/png",
+        },
+      ],
+      type: "website",
+      siteName: "Winx Analyzer",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `I'm ${character.name}! ${character.emoji}`,
+      description: `${character.description} Built by @altagers.eth with support from @sohey`,
+      images: [dynamicImageUrl],
     },
     other: {
       "fc:frame": JSON.stringify(frameDefinition),
+      // Добавляем дополнительные meta теги для лучшей совместимости
+      "fc:frame:image": dynamicImageUrl,
+      "fc:frame:image:aspect_ratio": "1.91:1",
+      "fc:frame:button:1": `I'm ${character.name}! Open Winx Analyzer`,
+      "fc:frame:button:1:action": "launch_frame",
+      "fc:frame:button:1:target": JSON.stringify({
+        type: "launch_frame",
+        name: appName,
+        url: appBaseUrl,
+        splashImageUrl: appSplashImageUrl,
+        splashBackgroundColor: appSplashBackgroundColor,
+      }),
     },
   }
 }

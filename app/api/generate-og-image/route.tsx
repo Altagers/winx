@@ -88,49 +88,6 @@ export async function GET(req: NextRequest) {
           </>
         )}
 
-        {/* Фоновые элементы для Блум - огонь */}
-        {characterData.name === "Bloom" && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "40px",
-              width: "80%",
-              height: "120px",
-              background: "linear-gradient(to top, rgba(255, 100, 0, 0.7), transparent)",
-              borderRadius: "50%",
-              filter: "blur(20px)",
-            }}
-          />
-        )}
-
-        {/* Фоновые элементы для Флоры - цветы */}
-        {characterData.name === "Flora" && (
-          <>
-            <div
-              style={{
-                position: "absolute",
-                top: "60px",
-                left: "60px",
-                width: "60px",
-                height: "60px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(255, 182, 193, 0.7)",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "80px",
-                right: "80px",
-                width: "70px",
-                height: "70px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(255, 182, 193, 0.7)",
-              }}
-            />
-          </>
-        )}
-
         {/* Изображение персонажа в круглой рамке */}
         <div
           style={{
@@ -243,8 +200,8 @@ export async function GET(req: NextRequest) {
         width: 1200,
         height: 630,
         headers: {
-          "Cache-Control": "public, max-age=31536000, immutable",
           "Content-Type": "image/png",
+          "Cache-Control": "public, max-age=31536000, immutable",
         },
       },
     )
