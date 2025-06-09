@@ -14,7 +14,7 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const appBaseUrl = "https://v0-mini-open-ai.vercel.app" // Update this to your actual URL
+  const appBaseUrl = "https://v0-powerpuff-girls-brown.vercel.app" // Обновленный URL
 
   const handleShare = async () => {
     setStatus("loading")
@@ -55,7 +55,6 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
         disabled={status === "loading"}
         variant={buttonVariant}
         className="w-full text-xl"
-        sparkles
       >
         {status === "loading" ? "Preparing Magic..." : `✨ Share Your Magic! ✨`}
       </WinxButton>

@@ -25,7 +25,8 @@ export async function POST(request: NextRequest) {
 
     console.log(`Backend: Querying Neynar API for FID: ${fid}`)
 
-    const neynarResponse = await fetch(`https://api.neynar.com/v2/farcaster/feed/user/popular?fid=${fid}&limit=10`, {
+    // Используем БЕСПЛАТНЫЙ endpoint для получения постов пользователя
+    const neynarResponse = await fetch(`https://api.neynar.com/v2/farcaster/casts?fid=${fid}&limit=25`, {
       method: "GET",
       headers: {
         accept: "application/json",
@@ -36,6 +37,13 @@ export async function POST(request: NextRequest) {
     if (!neynarResponse.ok) {
       const errorText = await neynarResponse.text()
       console.error(`Backend: Neynar API error for FID ${fid}: ${errorText}`)
+
+      // Если API не работает, используем демо-анализ
+      if (neynarResponse.status === 402) {
+        console.log(`Backend: Using demo analysis for FID ${fid} due to API limitations`)
+        return await getDemoAnalysis(fid)
+      }
+
       throw new Error(`Neynar API error: ${neynarResponse.status} - ${errorText}`)
     }
 
@@ -43,8 +51,8 @@ export async function POST(request: NextRequest) {
     const castTexts = neynarData.casts?.map((cast: any) => cast.text).filter(Boolean) || []
 
     if (castTexts.length === 0) {
-      console.log(`Backend: No casts found for FID ${fid}. Defaulting to Bloom.`)
-      return NextResponse.json({ character: characters.bloom })
+      console.log(`Backend: No casts found for FID ${fid}. Using demo analysis.`)
+      return await getDemoAnalysis(fid)
     }
 
     const allPosts = castTexts.join("\n---\n")
@@ -52,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     const { text: characterName } = await generateText({
       model: openai("gpt-4o-mini"),
-      system: `You are a personality analyzer for Winx Club characters. Analyze the user's posts and determine which character they match best. Be specific and look for distinct patterns:
+      system: `You are a personality analyzer for Winx Club characters. Analyze the user's posts and determine which Winx fairy they match best. Be specific and look for distinct patterns:
 
 BLOOM - The Dragon Flame Leader:
 - Uses decisive language, takes initiative
@@ -96,7 +104,7 @@ AISHA - The Morphix Fairy:
 - Straightforward, honest in communication
 - Language: "action", "sport", "adventure", "freedom", "achievement", "active", "move"
 
-Respond with ONLY the character name that best matches the overall pattern. Consider the dominant themes, not just individual posts.`,
+Respond with ONLY the character name that best matches the overall pattern: Bloom, Stella, Flora, Musa, Tecna, or Aisha.`,
       prompt: `Analyze these social media posts and determine which Winx Club fairy this person is most like:\n\n${allPosts}`,
       maxTokens: 15,
       temperature: 0.4,
@@ -127,4 +135,21 @@ Respond with ONLY the character name that best matches the overall pattern. Cons
       { status: 500 },
     )
   }
+}
+
+// Демо-анализ на основе FID (только Winx персонажи!)
+async function getDemoAnalysis(fid: number) {
+  console.log(`Backend: Using demo analysis for FID ${fid}`)
+
+  // Только Winx персонажи
+  const winxCharacterKeys = ["bloom", "stella", "flora", "musa", "tecna", "aisha"]
+  const selectedCharacterKey = winxCharacterKeys[fid % winxCharacterKeys.length]
+  const selectedCharacter = characters[selectedCharacterKey]
+
+  console.log(`Backend: Demo analysis result for FID ${fid}: ${selectedCharacter.name}`)
+
+  return NextResponse.json({
+    character: selectedCharacter,
+    demo: true,
+  })
 }

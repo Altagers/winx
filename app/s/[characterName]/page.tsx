@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   const characterNameParam = decodeURIComponent(params.characterName)
   const character = Object.values(characters).find((c) => c.name.toLowerCase() === characterNameParam.toLowerCase())
 
-  const appBaseUrl = process.env.NEXT_PUBLIC_URL || "https://v0-mini-open-ai.vercel.app"
+  const appBaseUrl = process.env.NEXT_PUBLIC_URL || "https://v0-powerpuff-girls-brown.vercel.app"
   const appName = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Winx Analyzer"
 
   // Ensure icon and splash URLs are absolute and have defaults
@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 export default function SharePage({ params }: Props) {
   const characterNameParam = decodeURIComponent(params.characterName)
   const character = Object.values(characters).find((c) => c.name.toLowerCase() === characterNameParam.toLowerCase())
-  const appBaseUrl = process.env.NEXT_PUBLIC_URL || "https://v0-mini-open-ai.vercel.app"
+  const appBaseUrl = process.env.NEXT_PUBLIC_URL || "https://v0-powerpuff-girls-brown.vercel.app"
 
   if (!character) {
     return (

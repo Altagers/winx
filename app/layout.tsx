@@ -4,21 +4,22 @@ import "./globals.css"
 import { MiniKitContextProvider } from "@/provider/minikit-provider"
 
 export const metadata: Metadata = {
-  title: "PowerPuff Personality Analyzer",
-  description: "Which Powerpuff Girl Are You? Analyze your Farcaster posts to find out!",
+  title: "Winx Analyzer - Which Winx Fairy Are You?",
+  description:
+    "Discover your magical essence! Analyze your Farcaster posts to find out which Winx fairy you are most like.",
   generator: "v0.dev",
   other: {
     "fc:frame": JSON.stringify({
       version: "next",
-      imageUrl: "https://v0-mini-open-ai.vercel.app/pp_banner.png",
+      imageUrl: "https://v0-powerpuff-girls-brown.vercel.app/winx_banner.png",
       button: {
-        title: "Find your Powerpuff",
+        title: "Discover Your Magic ✨",
         action: {
           type: "launch_frame",
-          name: "PowerPuff Analyzer",
-          url: "https://v0-mini-open-ai.vercel.app",
-          splashImageUrl: "https://v0-mini-open-ai.vercel.app/pp_banner.png",
-          splashBackgroundColor: "#FFD1DC",
+          name: "Winx Analyzer",
+          url: "https://v0-powerpuff-girls-brown.vercel.app",
+          splashImageUrl: "https://v0-powerpuff-girls-brown.vercel.app/winx_splash.png",
+          splashBackgroundColor: "#8B5CF6",
         },
       },
     }),

@@ -10,8 +10,8 @@ export async function GET(req: NextRequest) {
     const characterName = searchParams.get("characterName")
     const characterImagePublicPath = searchParams.get("characterImage") // e.g., /bloom.png
 
-    // Update this to your actual base URL
-    const baseUrl = "https://v0-mini-open-ai.vercel.app"
+    // Обновленный базовый URL
+    const baseUrl = "https://v0-powerpuff-girls-brown.vercel.app"
 
     if (!characterName || !characterImagePublicPath) {
       return new Response("Missing character information", { status: 400 })
