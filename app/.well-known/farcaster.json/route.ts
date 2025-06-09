@@ -13,11 +13,12 @@ export async function GET() {
   const URL = process.env.NEXT_PUBLIC_URL
 
   const manifest = {
-    accountAssociation: {
-      header: process.env.FARCASTER_HEADER,
-      payload: process.env.FARCASTER_PAYLOAD,
-      signature: process.env.FARCASTER_SIGNATURE,
-    },
+    // Временно убираем ассоциацию аккаунта до создания новой
+    // accountAssociation: {
+    //   header: process.env.FARCASTER_HEADER,
+    //   payload: process.env.FARCASTER_PAYLOAD,
+    //   signature: process.env.FARCASTER_SIGNATURE,
+    // },
     frame: withValidProperties({
       version: "1",
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Winx Analyzer",
