@@ -26,7 +26,7 @@ export async function GET() {
     frame: withValidProperties({
       version: "1",
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Winx Analyzer",
-      subtitle: process.env.NEXT_PUBLIC_APP_SUBTITLE || "Discover your magical essence",
+      subtitle: "Discover your magical essence", // Убрали эмодзи, сократили до 30 символов
       description: process.env.NEXT_PUBLIC_APP_DESCRIPTION || "Find out which Winx fairy you are!",
       iconUrl: `${URL}/winx_icon.png`,
       splashImageUrl: `${URL}/winx_splash.png`,
@@ -35,9 +35,9 @@ export async function GET() {
       webhookUrl: `${URL}/api/webhook`,
       primaryCategory: process.env.NEXT_PUBLIC_APP_PRIMARY_CATEGORY || "entertainment",
       heroImageUrl: `${URL}/winx_banner.png`,
-      tagline: process.env.NEXT_PUBLIC_APP_TAGLINE || "Discover your magical essence",
-      ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE || "Winx Analyzer",
-      ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION || "Which Winx fairy are you?",
+      tagline: "Discover your magical essence", // Убрали эмодзи, сократили до 30 символов
+      ogTitle: "Winx Analyzer", // Сократили до 30 символов
+      ogDescription: "Analyze your Farcaster posts to find out which Winx fairy you are most like.", // Сократили до 100 символов
       ogImageUrl: `${URL}/winx_banner.png`,
     }),
   }
