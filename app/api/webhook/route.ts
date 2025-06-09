@@ -4,7 +4,7 @@ import { http } from "viem"
 import { createPublicClient } from "viem"
 import { optimism } from "viem/chains"
 
-const appName = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME
+const appName = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Winx Analyzer"
 
 const KEY_REGISTRY_ADDRESS = "0x00000000Fc1237824fb747aBDE0FF18990E59b7e"
 
@@ -56,59 +56,94 @@ function decode(encoded: string) {
 }
 
 export async function POST(request: Request) {
-  const requestJson = await request.json()
+  try {
+    const requestJson = await request.json()
+    console.log("Webhook received:", JSON.stringify(requestJson, null, 2))
 
-  const { header: encodedHeader, payload: encodedPayload } = requestJson
+    const { header: encodedHeader, payload: encodedPayload } = requestJson
 
-  const headerData = decode(encodedHeader)
-  const event = decode(encodedPayload)
+    if (!encodedHeader || !encodedPayload) {
+      console.error("Missing header or payload in webhook request")
+      return Response.json({ success: false, error: "Missing header or payload" }, { status: 400 })
+    }
 
-  const { fid, key } = headerData
+    const headerData = decode(encodedHeader)
+    const event = decode(encodedPayload)
 
-  const valid = await verifyFidOwnership(fid, key)
+    console.log("Decoded header:", headerData)
+    console.log("Decoded event:", event)
 
-  if (!valid) {
-    return Response.json({ success: false, error: "Invalid FID ownership" }, { status: 401 })
-  }
+    const { fid, key } = headerData
 
-  switch (event.event) {
-    case "frame_added":
-      console.log("frame_added", "event.notificationDetails", event.notificationDetails)
-      if (event.notificationDetails) {
-        await setUserNotificationDetails(fid, event.notificationDetails)
-        await sendFrameNotification({
-          fid,
-          title: `Welcome to ${appName}`,
-          body: `Thank you for adding ${appName}`,
-        })
-      } else {
+    if (!fid || !key) {
+      console.error("Missing fid or key in header")
+      return Response.json({ success: false, error: "Missing fid or key" }, { status: 400 })
+    }
+
+    const valid = await verifyFidOwnership(fid, key)
+
+    if (!valid) {
+      console.error("Invalid FID ownership for fid:", fid)
+      return Response.json({ success: false, error: "Invalid FID ownership" }, { status: 401 })
+    }
+
+    switch (event.event) {
+      case "frame_added":
+        console.log("frame_added event for fid:", fid)
+        if (event.notificationDetails) {
+          await setUserNotificationDetails(fid, event.notificationDetails)
+          await sendFrameNotification({
+            fid,
+            title: `Welcome to ${appName}! ✨`,
+            body: `Thank you for adding ${appName}. Discover your magical essence!`,
+          })
+        } else {
+          await deleteUserNotificationDetails(fid)
+        }
+        break
+
+      case "frame_removed":
+        console.log("frame_removed event for fid:", fid)
         await deleteUserNotificationDetails(fid)
-      }
+        break
 
-      break
-    case "frame_removed": {
-      console.log("frame_removed")
-      await deleteUserNotificationDetails(fid)
-      break
-    }
-    case "notifications_enabled": {
-      console.log("notifications_enabled", event.notificationDetails)
-      await setUserNotificationDetails(fid, event.notificationDetails)
-      await sendFrameNotification({
-        fid,
-        title: `Welcome to ${appName}`,
-        body: `Thank you for enabling notifications for ${appName}`,
-      })
+      case "notifications_enabled":
+        console.log("notifications_enabled event for fid:", fid)
+        if (event.notificationDetails) {
+          await setUserNotificationDetails(fid, event.notificationDetails)
+          await sendFrameNotification({
+            fid,
+            title: `${appName} Notifications Enabled! 🧚‍♀️`,
+            body: `You'll now receive magical updates from ${appName}!`,
+          })
+        }
+        break
 
-      break
-    }
-    case "notifications_disabled": {
-      console.log("notifications_disabled")
-      await deleteUserNotificationDetails(fid)
+      case "notifications_disabled":
+        console.log("notifications_disabled event for fid:", fid)
+        await deleteUserNotificationDetails(fid)
+        break
 
-      break
+      default:
+        console.log("Unknown event type:", event.event)
+        break
     }
+
+    return Response.json({ success: true })
+  } catch (error) {
+    console.error("Webhook error:", error)
+    return Response.json(
+      { success: false, error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 },
+    )
   }
+}
 
-  return Response.json({ success: true })
+// Добавляем GET endpoint для проверки webhook
+export async function GET() {
+  return Response.json({
+    message: "Winx Analyzer Webhook is running",
+    timestamp: new Date().toISOString(),
+    appName,
+  })
 }
