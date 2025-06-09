@@ -4,6 +4,7 @@ import { useState } from "react"
 import { sdk } from "@farcaster/frame-sdk"
 import { WinxButton } from "./winx-button"
 import type { WinxCharacter } from "@/lib/characters"
+import { getRandomPhrase } from "@/lib/characters"
 
 interface ShareResultButtonProps {
   character: WinxCharacter
@@ -14,7 +15,7 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const appBaseUrl = "https://v0-powerpuff-girls-brown.vercel.app" // Обновленный URL
+  const appBaseUrl = "https://v0-powerpuff-girls-brown.vercel.app"
 
   const handleShare = async () => {
     setStatus("loading")
@@ -23,7 +24,14 @@ export function ShareResultButton({ character, onReset }: ShareResultButtonProps
     // Construct the URL for the shareable page
     const sharePageUrl = new URL(`/s/${encodeURIComponent(character.name)}`, appBaseUrl).toString()
 
-    const castText = `I'm ${character.name}! ${character.emoji} Which Winx fairy are you? Discover your magical power with Winx Analyzer! ✨🧚‍♀️`
+    // Получаем случайную забавную фразу для персонажа
+    const randomPhrase = getRandomPhrase(character)
+
+    const castText = `I'm ${character.name}! ${character.emoji} ${randomPhrase}
+
+Which Winx fairy are you? Discover your magical power with Winx Analyzer! ✨🧚‍♀️
+
+Built by @altagers.eth with support from @sohey`
 
     try {
       await sdk.actions.composeCast({

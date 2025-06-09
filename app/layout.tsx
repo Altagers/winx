@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       version: "next",
       imageUrl: "https://v0-powerpuff-girls-brown.vercel.app/winx_banner.png",
       button: {
-        title: "Discover Your Magic ✨",
+        title: "Discover Your Winx Fairy ✨",
         action: {
           type: "launch_frame",
           name: "Winx Analyzer",

@@ -51,9 +51,13 @@ export default function Home() {
         <SentimentAnalyzer />
       </div>
 
-      {/* Minimal footer */}
+      {/* Footer with credits */}
       <footer className="mt-16 text-center">
-        <p className="text-slate-400 text-sm font-light">Made with magic and code</p>
+        <p className="text-slate-400 text-sm font-light mb-2">Made with magic and code</p>
+        <p className="text-slate-400 text-xs">
+          Built by <span className="text-violet-500 font-medium">@altagers.eth</span> with support from{" "}
+          <span className="text-violet-500 font-medium">@sohey</span>
+        </p>
       </footer>
     </div>
   )

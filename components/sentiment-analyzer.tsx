@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useMiniKit } from "@coinbase/onchainkit/minikit"
 import type { WinxCharacter } from "@/lib/characters"
+import { getRandomPhrase } from "@/lib/characters"
 import Image from "next/image"
 import { WinxButton } from "./winx-button"
 import { ShareResultButton } from "./share-result-button"
@@ -96,15 +97,20 @@ function ResultScreen({ result, onReset }: { result: AnalysisResult; onReset: ()
   }
 
   const characterName = result.character.name
+  const randomPhrase = getRandomPhrase(result.character)
 
   return (
     <div className="w-full space-y-6">
       {/* Result header */}
       <div className="text-center">
         <h2 className="text-3xl font-light text-magic-gradient mb-2">You are {characterName}</h2>
-        <p className="text-slate-500 text-sm">
+        <p className="text-slate-500 text-sm mb-3">
           {result.character.power} • {result.character.trait}
         </p>
+        {/* Забавная фраза */}
+        <div className="bg-gradient-to-r from-violet-100 to-pink-100 rounded-2xl p-3 mb-4">
+          <p className="text-violet-700 font-medium italic">"{randomPhrase}"</p>
+        </div>
       </div>
 
       {/* Character image */}

@@ -1,4 +1,4 @@
-# Next js project setup
+# Winx Analyzer
 
 *Automatically synced with your [v0.dev](https://v0.dev) deployments*
 
@@ -7,14 +7,28 @@
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+**Winx Analyzer** - Discover which Winx fairy you are! 🧚‍♀️✨
+
+This Farcaster Mini App analyzes your posts to determine which Winx Club character matches your personality:
+- 🔥 **Bloom** - The Dragon Flame Leader
+- ☀️ **Stella** - The Shining Princess  
+- 🌸 **Flora** - The Nature Fairy
+- 🎵 **Musa** - The Music Fairy
+- 💜 **Tecna** - The Technology Fairy
+- 🌊 **Aisha** - The Morphix Fairy
+
+## Features
+
+- 🔍 **AI-Powered Analysis** - Uses OpenAI to analyze your Farcaster posts
+- 🎨 **Beautiful Results** - Dynamic OG images for sharing
+- 📱 **Farcaster Integration** - Native Mini App experience
+- ✨ **Magical Design** - Minimalist but enchanting UI
 
 ## Deployment
 
 Your project is live at:
 
-**[https://vercel.com/soheimams-projects/v0-next-js-project-setup](https://vercel.com/soheimams-projects/v0-next-js-project-setup)**
+**[https://v0-powerpuff-girls-brown.vercel.app](https://v0-powerpuff-girls-brown.vercel.app)**
 
 ## Build your app
 
@@ -24,7 +38,10 @@ Continue building your app on:
 
 ## How It Works
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+1. Connect your Farcaster account
+2. Click "Discover Your Magic" 
+3. AI analyzes your posts to find your Winx fairy match
+4. Share your magical result with friends! 🧚‍♀️
+\`\`\`
+
+Обновим переменные окружения - полностью Winx версия:
